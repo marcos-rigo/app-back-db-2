@@ -42,12 +42,22 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref:"Country"
     },
+    password:{
+        type: String,
+        trim: true,
+        required: [true, "La contraseña es obligatoria"]
+    },
     hobbies:{
         type:Array
     }
 },{
     timestamps:true,
     versionKey:false
-})
+});
+
+UserSchema.methods.toJSON = function(){
+    const {password, ... user} = this.toObject();
+    return user
+}
 
 module.exports= model("User", UserSchema);
